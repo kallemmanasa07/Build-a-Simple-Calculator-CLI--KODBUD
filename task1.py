@@ -13,6 +13,7 @@ def backspace(event=None):
     current = entry.get()
     entry.delete(0, tk.END)
     entry.insert(0, current[:-1])
+    return "break"  # Prevent default backspace action
 
 def calculate(event=None):
     try:
@@ -29,7 +30,7 @@ def calculate(event=None):
     except ZeroDivisionError:
         messagebox.showerror("Error", "Cannot divide by zero!")
 
-    except:
+    except Exception:
         messagebox.showerror("Error", "Invalid Expression!")
 
 # ---------------- WINDOW ---------------- #
@@ -75,6 +76,7 @@ entry = tk.Entry(
 )
 
 entry.grid(row=1, column=0, columnspan=4, padx=10, pady=20)
+entry.focus_set()
 
 # ---------------- BUTTONS ---------------- #
 
@@ -135,15 +137,8 @@ for r, row in enumerate(buttons):
 
 # ---------------- KEYBOARD SUPPORT ---------------- #
 
-def key_press(event):
-    key = event.char
-
-    if key in "0123456789+-*/.":
-        entry.insert(tk.END, key)
-
-root.bind("<Key>", key_press)
 root.bind("<Return>", calculate)      # Enter key
-root.bind("<BackSpace>", backspace)   # Backspace key
+entry.bind("<BackSpace>", backspace)  # Backspace key
 
 # ---------------- FOOTER ---------------- #
 
